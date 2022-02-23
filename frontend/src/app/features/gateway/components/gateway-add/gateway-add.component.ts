@@ -14,7 +14,6 @@ import Swal from 'sweetalert2';
 export class GatewayAddComponent implements OnInit {
   peripherals: PeripheralDevice[]; 
   peripheralStatus = Status;
-  editField!: string;
   gateway!: Gateway;  
   peripheralForm!: FormGroup;  
   gatewayForm!: FormGroup; 

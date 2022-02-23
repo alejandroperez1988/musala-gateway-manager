@@ -5,6 +5,8 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({ origin: '*' });
+  
+  // Swagger for test endpoints
   // const config = new DocumentBuilder()
   //   .setTitle('Gateways CRUD')
   //   .setDescription('A gateways API CRUD')
