@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row"  *ngIf="apiNotFound">
+        <h1 class="text-center">Something is wrong!!!</h1>
+        <h3 class="text-center">Please check your Internet conexion.</h3>
+    </div>
+    <div class="row" *ngIf="!apiNotFound">
+        <h1 class="mb-5 text-center">Gateways List</h1>
+        <table class="table table-striped mb-5">
+            <thead>
+            <tr>                
+                <th scope="col">Name</th>
+                <th scope="col">IPv4 Adress</th>
+                <th scope="col">Peripherals</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let gateway of gateways; index as i">                
+                <th scope="row">{{ gateway.name }}</th>
+                <td>{{ gateway.ipv4 }}</td>
+                <td>{{ gateway.peripheralDevices.length}}</td>
+                <td>    
+                    <button class="btn btn-warning" (click)="openGatewayDetails(gateway.id)">Details</button> 
+                    <button class="btn btn-warning" (click)="openGatewayEdit(gateway.id)">Edit</button> 
+                    <button class="btn btn-warning" (click)="removeGateway(gateway.id)">Remove</button> 
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

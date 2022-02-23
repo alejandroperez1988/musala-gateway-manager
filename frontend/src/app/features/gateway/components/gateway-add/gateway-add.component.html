@@ -1,0 +1,150 @@
+<div class="container">
+    <div class="row mb-5">
+            <h1 *ngIf="isNew; else showEditTitle" class="text-center">Add Gateway</h1>
+        <ng-template #showEditTitle>
+            <h1 class="text-center">Edit Gateway</h1>
+        </ng-template>        
+    </div>
+
+    <div class="row">        
+        <form [formGroup]="gatewayForm" (submit)="submit()" >
+            <div class="form-group mb-3 d-flex justify-content-between">
+                <div class="w-100 me-3">               
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Gateway name"   
+                        [ngClass]="{
+                            'is-invalid': gatewayC.invalid && (gatewayC.dirty || gatewayC.touched),
+                            'is-valid': gatewayC.valid && (gatewayC.dirty || gatewayC.touched)
+                          }"                     
+                        formControlName="gateway" required>                    
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                  </div>                  
+                  <div class="w-100 me-3">                
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="IPv4 Address" 
+                        [ngClass]="{
+                            'is-invalid': ipv4C.invalid && (ipv4C.dirty || ipv4C.touched),
+                            'is-valid':ipv4C.valid && (ipv4C.dirty || ipv4C.touched)
+                          }"  
+                        formControlName="ipv4" required> 
+                    <div *ngIf="ipv4C.hasError('required')" class="invalid-feedback">Please fill out this field.</div>
+                    <div *ngIf="ipv4C.invalid && !ipv4C.hasError('required')" class="invalid-feedback">Please insert a valid IPv4 address.</div>
+                  </div>
+                  <div >
+                      <button *ngIf="isNew; else showUpdateButton" type="submit" class="btn btn-warning" [disabled]="gatewayForm.invalid">Add</button>
+                      <ng-template #showUpdateButton>
+                        <button type="submit" class="btn btn-warning" [disabled]="gatewayForm.invalid">Update</button>
+                      </ng-template>
+                  </div>
+            </div>
+        </form>
+    </div>          
+<div class="card">
+    <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Peripherals Devices</h3>
+    <div class="card-body">
+      <div id="table" class="table-editable">
+        <span class="mb-3 mr-2">
+            <form [formGroup]="peripheralForm" (submit)="addPeripheral()"  class="d-flex justify-content-between mb-4">
+                <div class="w-100 me-3">               
+                    <input type="text" 
+                           class="form-control "  
+                           placeholder="UID Number" 
+                           [ngClass]="{
+                            'is-invalid': uid.invalid && (uid.dirty || uid.touched),
+                            'is-valid':uid.valid && (uid.dirty || uid.touched)
+                          }"  
+                           formControlName="uid" required>
+                    <div *ngIf="uid.hasError('required')" class="invalid-feedback">Please fill out this field.</div>
+                    <div *ngIf="uid.invalid && !uid.hasError('required')" class="invalid-feedback">Please insert a valid UID number.</div>
+                  </div>
+                  <div class="w-100 me-3">                
+                    <input type="text" 
+                           class="form-control" 
+                           placeholder="Vendor" 
+                           [ngClass]="{
+                            'is-invalid': vendor.invalid && (vendor.dirty || vendor.touched),
+                            'is-valid':vendor.valid && (vendor.dirty || vendor.touched)
+                          }" 
+                           formControlName="vendor" required>
+                    <div *ngIf="vendor.hasError('required')" class="invalid-feedback">Please fill out this field.</div>
+                  </div>    
+                  <div class="w-100 me-3 d-flex">     
+                    <div class="input-group align-items-start">
+                      <input placeholder="Select a date" 
+                             class="form-control"  
+                             type="date" 
+                             [ngClass]="{
+                              'is-invalid': createdDate.invalid && (createdDate.dirty || createdDate.touched),
+                              'is-valid':createdDate.valid && (createdDate.dirty || createdDate.touched)
+                            }" 
+                             formControlName="createdDate" required />    
+                      <div *ngIf="createdDate.hasError('required')" class="invalid-feedback">Please fill out this field.</div>                
+                    </div>    
+                  </div>
+                  <div class="w-100 me-3">                
+                    <select class="form-select" 
+                            formControlName="status"
+                            [ngClass]="{
+                              'is-invalid': status.invalid && (status.dirty || status.touched),
+                              'is-valid':status.valid && (status.dirty || status.touched)
+                            }" >
+                      <option selected>Select status</option>
+                      <option value="1">Online</option>
+                      <option value="0">Offline</option>                     
+                    </select>
+                    <div *ngIf="status.invalid && !status.hasError('required')" class="invalid-feedback">Please select a Status.</div>
+                  </div>               
+                  <button class="text-success btn p-0" [disabled]="peripheralForm.invalid" type="submit" >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                      </svg>
+                    </button>
+            </form>         
+        </span>
+        <table class="table table-bordered table-responsive-md table-striped text-center">
+          <tr>
+            <th class="text-center">UID</th>
+            <th class="text-center">Vendor</th>
+            <th class="text-center">Created At</th>
+            <th class="text-center">Status</th>           
+            <th class="text-center">Remove</th>
+          </tr>
+          <tr *ngFor="let peripheral of peripherals; let id = index">
+            <td>
+              <span>{{peripheral.uid}}</span>
+            </td>
+            <td>
+              <span>{{peripheral.vendor}}</span>
+            </td>
+            <td>
+              <span>{{peripheral.createdDate | date:'longDate'}}</span>
+            </td>
+            <td>
+              <span class="status-online" [class.status-offline]="peripheral.status==0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-circle-fill me-2" viewBox="0 0 16 16">
+                <circle cx="8" cy="8" r="8"/>
+              </svg>
+              <small>
+                {{peripheralStatus[peripheral.status]}}
+              </small>
+              </span>
+            </td>                   
+            <td>
+              <span class="table-remove">
+                <a class="text-danger" (click)="remove(id)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-file-x-fill" viewBox="0 0 16 16">
+                        <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM6.854 6.146 8 7.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 8l1.147 1.146a.5.5 0 0 1-.708.708L8 8.707 6.854 9.854a.5.5 0 0 1-.708-.708L7.293 8 6.146 6.854a.5.5 0 1 1 .708-.708z"/>
+                      </svg>
+                </a>                
+              </span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div> 
+</div>

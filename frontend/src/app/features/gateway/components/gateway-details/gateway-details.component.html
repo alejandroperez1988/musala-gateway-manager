@@ -1,0 +1,37 @@
+<div class="container gateway-details">
+    <div class="row d-flex align-items-center" *ngIf="gateway">
+        <h2 class="text-center">{{gateway.name}}</h2>
+        <h4 class="bg-warning text-center text-white">IP: {{gateway.ipv4}}</h4>
+    </div>
+    <div class="row ">        
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">UID</th>
+                <th scope="col">Vendor</th>
+                <th scope="col">Created</th>
+                <th scope="col">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let peripheral of peripherals">
+                <th scope="row">{{ peripheral.uid }}</th>
+                <td>{{ peripheral.vendor }}</td>
+                <td>{{ peripheral.createdDate | date:'longDate' }}</td>                
+                <td class="status-online" [class.status-offline]="peripheral.status==0">
+                    {{peripheral.status}}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-circle-fill me-2" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="8"/>
+                      </svg>
+                      <small>
+                        {{peripheralStatus[peripheral.status]}}
+                      </small>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row close-button">
+        <button class="btn btn-warning" (click)="close()">Close</button>
+    </div>
+</div>
